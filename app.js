@@ -94,7 +94,8 @@
     float side = smoothstep(0., .5, a) * smoothstep(1.3, .4, a) * .022;
 
     float flake = (hash(floor(gl_FragCoord.xy)) - .5) * .006;
-    float body = .012 + side + lines * (.45 + uLight * .55) + flake * (aura * 12. + .4);
+    // Fuera de la portada el fondo se queda casi liso, para que mande el contenido.
+    float body = .012 + (side + lines) * (.08 + uLight * .92) + flake * (aura * 12. + .4);
 
     vec2 wuv = vec2(uv.x + n.x * .1, 1. - uv.y + n.y * .13 + uWordShift);
     float word = texture2D(uWord, wuv).a;
@@ -193,7 +194,7 @@
       const contact = document.getElementById('contacto').getBoundingClientRect().top;
       const hero = clamp(1 - y / (vh * .85), 0, 1);
       const end = clamp(1 - contact / (vh * .8), 0, 1);
-      return Math.max(.13, hero, end * .3);
+      return Math.max(.05, hero, end * .22);
     };
 
     const paint = now => {
@@ -374,14 +375,6 @@
   document.querySelectorAll('.svc-row').forEach(row => {
     row.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') showService(row); });
     row.addEventListener('focus', () => showService(row));
-  });
-
-  /* Garaje */
-  const park = document.querySelector('.park');
-  document.querySelectorAll('.arrow').forEach(b => {
-    b.addEventListener('click', () => {
-      park.scrollBy({ left: Number(b.dataset.dir) * park.clientWidth * .7, behavior: still ? 'auto' : 'smooth' });
-    });
   });
 
   /* Cabecera y barra de contacto en móvil */
